@@ -1,10 +1,14 @@
 export interface IImage {
   id: string;
-  alt_description: string;
+  user: {
+    name: string;
+  };
+  likes: number;
   urls: {
     small: string;
     regular: string;
   };
+  alt_description: string;
 }
 
 export interface IAppState {
