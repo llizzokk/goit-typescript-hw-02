@@ -1,0 +1,12 @@
+.buttonLoad {
+  border-radius: 4px;
+  border: 1px solid rgb(101, 118, 132);
+  background-color: rgb(101, 118, 132);
+  color: #fff;
+  padding: 8px 16px;
+  transition: background-color 250ms ease-in-out;
+}
+
+.buttonLoad:hover {
+  background-color: rgb(63, 71, 78);
+}

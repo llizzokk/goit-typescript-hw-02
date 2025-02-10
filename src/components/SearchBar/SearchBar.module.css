@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: rgb(101, 118, 132);
+  padding: 20px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  border: 1px solid rgb(63, 71, 78);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.input {
+  padding: 10px 14px;
+  width: 380px;
+  height: 40px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #fff;
+}
+
+.button {
+  padding: 10px 16px;
+  height: 40px;
+  font-size: 18px;
+  background-color: #fff;
+  border: none;
+}
+
+@media screen and (max-width: 768px) {
+  .input {
+    padding: 8px 12px;
+    width: 280px;
+  }
+}

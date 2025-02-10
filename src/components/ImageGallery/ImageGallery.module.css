@@ -1,0 +1,17 @@
+.imageList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0 0 32px 0;
+}
+.imageCard {
+  box-sizing: border-box;
+  width: 360px;
+  height: 200px;
+  transition: scale 250ms ease-in-out;
+}
+
+.imageCard:hover {
+  scale: 1.04;
+}
