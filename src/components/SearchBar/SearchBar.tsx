@@ -3,10 +3,12 @@ import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { toast } from "react-hot-toast";
 
-const SearchBar = ({ onSubmit }) => {
+import { ISearchBarProps } from "./SearchBar.types";
+
+const SearchBar: React.FC<ISearchBarProps> = ({ onSubmit }) => {
   const [query, setQuery] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim() === "") {
       toast.error("Enter your search query", {

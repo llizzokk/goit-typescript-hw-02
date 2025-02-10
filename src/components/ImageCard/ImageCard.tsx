@@ -1,6 +1,8 @@
 import styles from "./ImageCard.module.css";
 
-const ImageCard = ({ image, onClick }) => {
+import { IImageCardProps } from "./ImageCard.types";
+
+const ImageCard: React.FC<IImageCardProps> = ({ image, onClick }) => {
   return (
     <div className={styles.imageCardWrap}>
       <img
