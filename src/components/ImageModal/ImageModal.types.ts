@@ -1,4 +1,4 @@
-import { IImage } from "../App/App.types";
+import { IImage } from "../ImageCard/ImageCard.types";
 
 export interface IImageModalProps {
   isOpen: boolean;
