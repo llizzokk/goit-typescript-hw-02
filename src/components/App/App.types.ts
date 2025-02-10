@@ -1,20 +1,25 @@
-export interface IAppImage {
+export interface IImage extends Record<string, any> {
   id: string;
+  user: {
+    name: string;
+  };
+  likes: number;
   urls: {
     small: string;
     regular: string;
   };
+  alt_description: string;
 }
 
 export interface IAppState {
   query: string;
-  images: IAppImage[];
+  images: IImage[];
   loading: boolean;
   error: boolean;
   page: number;
   totalPages: number;
   isModalOpen: boolean;
-  selectedImage: IAppImage | null;
+  selectedImage: IImage | null;
 }
 
 export type SearchHandle = (query: string) => void;

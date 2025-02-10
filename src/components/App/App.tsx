@@ -32,7 +32,9 @@ function App() {
         setState((prev) => ({
           ...prev,
           images:
-            state.page === 1 ? data.results : [...prev.images, ...data.results],
+            state.page === 1
+              ? (data.results as IImage[])
+              : [...prev.images, ...(data.results as IImage[])],
           totalPages: data.total_pages,
         }));
       } catch (error) {
@@ -56,7 +58,13 @@ function App() {
   };
 
   const handleImageClick = (image: IImage) => {
-    setState((prev) => ({ ...prev, selectedImage: image, isModalOpen: true }));
+    if (!state.isModalOpen) {
+      setState((prev) => ({
+        ...prev,
+        selectedImage: image,
+        isModalOpen: true,
+      }));
+    }
   };
 
   const handleModalClose = () => {
