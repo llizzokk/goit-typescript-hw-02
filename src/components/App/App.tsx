@@ -9,86 +9,81 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ImageModal from "../ImageModal/ImageModal";
 
-import { IAppState, SearchHandle, LoadMoreHandle, IImage } from "./App.types";
+import { SearchHandle, LoadMoreHandle, IImage } from "./App.types";
 
 function App() {
-  const [state, setState] = useState<IAppState>({
-    query: "",
-    images: [],
-    loading: false,
-    error: false,
-    page: 1,
-    totalPages: 0,
-    isModalOpen: false,
-    selectedImage: null,
-  });
+  const [query, setQuery] = useState<string>("");
+  const [images, setImages] = useState<IImage[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<IImage | null>(null);
 
   useEffect(() => {
-    if (!state.query) return;
+    if (!query) return;
     async function getImages() {
       try {
-        setState((prev) => ({ ...prev, loading: true }));
-        const data = await fetchImages(state.query, state.page);
-        setState((prev) => ({
-          ...prev,
-          images:
-            state.page === 1
-              ? (data.results as IImage[])
-              : [...prev.images, ...(data.results as IImage[])],
-          totalPages: data.total_pages,
-        }));
+        setLoading(true);
+        setError(false);
+        const data = await fetchImages(query, page);
+        setImages((prevImages) =>
+          page === 1
+            ? (data.results as IImage[])
+            : [...prevImages, ...(data.results as IImage[])]
+        );
+        setTotalPages(data.total_pages);
       } catch (error) {
-        setState((prev) => ({ ...prev, error: true }));
+        setError(true);
       } finally {
-        setState((prev) => ({ ...prev, loading: false }));
+        setLoading(false);
       }
     }
 
     getImages();
-  }, [state.query, state.page]);
+  }, [query, page]);
 
   const handleSearch: SearchHandle = (query) => {
-    setState({ ...state, query, page: 1 });
+    setQuery(query);
+    setPage(1);
+    setTotalPages(0);
   };
 
   const handleLoadMore: LoadMoreHandle = () => {
-    if (state.page < state.totalPages) {
-      setState((prev) => ({ ...prev, page: prev.page + 1 }));
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
   const handleImageClick = (image: IImage) => {
-    if (!state.isModalOpen) {
-      setState((prev) => ({
-        ...prev,
-        selectedImage: image,
-        isModalOpen: true,
-      }));
+    if (!isModalOpen) {
+      setSelectedImage(image);
+      setIsModalOpen(true);
     }
   };
 
   const handleModalClose = () => {
-    setState((prev) => ({ ...prev, selectedImage: null, isModalOpen: false }));
+    setSelectedImage(null);
+    setIsModalOpen(false);
   };
   return (
     <>
       <SearchBar onSubmit={handleSearch} />
       <Toaster />
       <div className="wrapper">
-        {state.loading && <Loader />}
-        {state.error && <ErrorMessage />}
-        {state.images && state.images.length > 0 && (
-          <ImageGallery images={state.images} onImageClick={handleImageClick} />
+        {loading && <Loader />}
+        {error && <ErrorMessage />}
+        {images && images.length > 0 && (
+          <ImageGallery images={images} onImageClick={handleImageClick} />
         )}
-        {state.images &&
-          state.images.length > 0 &&
-          state.page < state.totalPages && (
-            <LoadMoreBtn onClick={handleLoadMore} />
-          )}
-        {state.selectedImage && (
+        {images && images.length > 0 && page < totalPages && (
+          <LoadMoreBtn onClick={handleLoadMore} />
+        )}
+        {selectedImage && (
           <ImageModal
-            isOpen={state.isModalOpen}
-            image={state.selectedImage}
+            isOpen={isModalOpen}
+            image={selectedImage}
             onClose={handleModalClose}
           />
         )}
